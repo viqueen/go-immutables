@@ -26,12 +26,18 @@ func main() {
 			switch genericDeclaration.Tok {
 			case token.TYPE:
 				for _, spec := range genericDeclaration.Specs {
-					if typeSpec, typeSpecOk := spec.(*ast.TypeSpec); typeSpecOk {
-						builderCode := builders.GenerateStructBuilder(packageName, typeSpec)
-						fmt.Printf("%s\n", builderCode)
-					}
+					handleSpec(packageName, spec)
 				}
 			}
+		}
+	}
+}
+
+func handleSpec(packageName string, spec ast.Spec) {
+	if typeSpec, typeSpecOk := spec.(*ast.TypeSpec); typeSpecOk {
+		builderFileName := builders.GenerateStructBuilder(packageName, typeSpec)
+		if builderFileName != "" {
+			fmt.Printf("generated %s\n", builderFileName)
 		}
 	}
 }

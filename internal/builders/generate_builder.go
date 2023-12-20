@@ -3,6 +3,7 @@ package builders
 import (
 	"go/ast"
 	"log"
+	"os"
 	"strings"
 	"text/template"
 
@@ -28,16 +29,14 @@ type {{.Name}}Builder struct {
 }
 
 func New{{.Name}}Builder() *{{.Name}}Builder {
-	return &{{.Name}}Builder{ {{.Name}}() }
+	return &{{.Name}}Builder{ {{.Name}}{} }
 }
-
 {{range .Fields}}
 func (b *{{$.Name}}Builder) With{{.Name}}({{.Name}} {{.Type}}) *{{$.Name}}Builder {
 	b.target.{{.Name}} = {{.Name}}
 	return b
 }
 {{end}}
-
 func (b *{{.Name}}Builder) Build() {{.Name}} {
 	return b.target
 }
@@ -50,18 +49,29 @@ func GenerateStructBuilder(packageName string, typeSpec *ast.TypeSpec) string {
 		Fields:      extractPublicFields(typeSpec),
 	}
 
+	if len(structInfo.Fields) == 0 {
+		return ""
+	}
+
 	parsed, err := template.New("builder").Parse(builderTemplate)
 	if err != nil {
 		log.Fatalf("could not parse builder template: %v", err)
 	}
 
-	var builder strings.Builder
-	err = parsed.Execute(&builder, structInfo)
+	base := strings.ToLower(structInfo.Name)
+	buildersFileName := base + "_builder.go"
+	buildersFile, err := os.Create(buildersFileName)
+	if err != nil {
+		log.Fatalf("could not create builders file: %v", err)
+	}
+	defer buildersFile.Close()
+
+	err = parsed.Execute(buildersFile, structInfo)
 	if err != nil {
 		log.Fatalf("could not execute builder template: %v", err)
 	}
 
-	return builder.String()
+	return buildersFileName
 }
 
 func extractPublicFields(typeSpec *ast.TypeSpec) []FieldInfo {
