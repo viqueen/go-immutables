@@ -15,11 +15,14 @@ type FieldInfo struct {
 }
 
 type StructInfo struct {
-	Name   string
-	Fields []FieldInfo
+	PackageName string
+	Name        string
+	Fields      []FieldInfo
 }
 
 var builderTemplate = `
+package {{.PackageName}}
+
 type {{.Name}}Builder struct {
 	target {{.Name}}
 }
@@ -40,10 +43,11 @@ func (b *{{.Name}}Builder) Build() {{.Name}} {
 }
 `
 
-func GenerateStructBuilder(typeSpec *ast.TypeSpec) string {
+func GenerateStructBuilder(packageName string, typeSpec *ast.TypeSpec) string {
 	structInfo := StructInfo{
-		Name:   typeSpec.Name.Name,
-		Fields: extractPublicFields(typeSpec),
+		PackageName: packageName,
+		Name:        typeSpec.Name.Name,
+		Fields:      extractPublicFields(typeSpec),
 	}
 
 	parsed, err := template.New("builder").Parse(builderTemplate)
