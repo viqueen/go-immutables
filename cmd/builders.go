@@ -7,6 +7,8 @@ import (
 	"go/token"
 	"log"
 	"os"
+
+	"github.com/viqueen/go-immutables/internal/builders"
 )
 
 func main() {
@@ -18,16 +20,14 @@ func main() {
 		log.Fatalf("could not parse file: %v", err)
 	}
 
-	var structNames []string
 	for _, declaration := range file.Decls {
 		if genericDeclaration, ok := declaration.(*ast.GenDecl); ok && genericDeclaration.Tok == token.TYPE {
 			for _, spec := range genericDeclaration.Specs {
 				if typeSpec, typeSpecOk := spec.(*ast.TypeSpec); typeSpecOk {
-					structNames = append(structNames, typeSpec.Name.Name)
+					builderCode := builders.GenerateStructBuilder(typeSpec)
+					fmt.Printf("%s\n", builderCode)
 				}
 			}
 		}
 	}
-
-	fmt.Printf("structs: %s\n", structNames)
 }
