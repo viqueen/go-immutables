@@ -35,7 +35,7 @@ func main() {
 
 func handleSpec(packageName string, spec ast.Spec) {
 	if typeSpec, typeSpecOk := spec.(*ast.TypeSpec); typeSpecOk {
-		builderFileName := builders.GenerateStructBuilder(packageName, typeSpec)
+		builderFileName := builders.GenerateStandardStructBuilder(packageName, typeSpec)
 		if builderFileName != "" {
 			fmt.Printf("generated %s\n", builderFileName)
 		}
