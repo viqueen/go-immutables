@@ -9,14 +9,14 @@ type ContentService struct {
 
 func (s *ContentService) CreateContent(request CreateContentRequest) (CreateContentResponse, error) {
 	key := strings.ToLower(request.title)
-	content := *NewContentBuilder().
+	content := NewContentBuilder().
 		SetTitle(request.title).
 		SetBody(request.body).
 		SetSummary(request.summary).
 		Build()
 
 	s.dataStore[key] = content
-	response := *NewCreateContentResponseBuilder().
+	response := NewCreateContentResponseBuilder().
 		SetContent(content).
 		Build()
 	return response, nil

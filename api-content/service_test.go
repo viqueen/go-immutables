@@ -43,7 +43,7 @@ func TestContentService(t *testing.T) {
 
 			for _, input := range test.partials {
 				_, err := service.CreateContent(
-					*apicontent.NewCreateContentRequestBuilder().
+					apicontent.NewCreateContentRequestBuilder().
 						SetTitle(input.title).
 						SetBody(input.body).
 						Build(),
