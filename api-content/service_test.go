@@ -35,7 +35,9 @@ func TestContentService(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		service := apicontent.ContentService{}
+		service := apicontent.NewContentServiceBuilder().
+			SetDataStore(make(map[string]apicontent.Content)).
+			Build()
 		var errs []error
 
 		for _, input := range test.partials {

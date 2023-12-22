@@ -4,8 +4,6 @@ package api_content
 type ContentBuilder interface {
     Build() *Content
     
-    SetId(value string) ContentBuilder
-    
     SetTitle(value string) ContentBuilder
     
     SetBody(value map[ContentFormat]string) ContentBuilder
@@ -24,11 +22,6 @@ func NewContentBuilder() ContentBuilder {
     }
 }
 
-
-func (b *contentBuilder) SetId(value string) ContentBuilder {
-    b.target.id = value
-    return b
-}
 
 func (b *contentBuilder) SetTitle(value string) ContentBuilder {
     b.target.title = value

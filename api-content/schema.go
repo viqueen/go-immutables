@@ -13,7 +13,6 @@ const (
 )
 
 type Content struct {
-	id      string                   `field:"required"`
 	title   string                   `field:"required"`
 	body    map[ContentFormat]string `field:"required"`
 	summary string
