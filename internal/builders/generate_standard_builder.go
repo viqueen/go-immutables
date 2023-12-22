@@ -43,7 +43,7 @@ func (b *{{.Name.Lower}}Builder) Build() {{.Name.Upper}} {
 `
 
 func GenerateStandardStructBuilder(packageName string, typeSpec *ast.TypeSpec) string {
-	structDetails := ast_helpers.ExtractDetails(packageName, typeSpec)
+	structDetails := ast_helpers.ExtractStructDetails(packageName, typeSpec)
 
 	if (len(structDetails.Fields)) == 0 {
 		return ""

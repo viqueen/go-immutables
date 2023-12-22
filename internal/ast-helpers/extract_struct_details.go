@@ -24,7 +24,7 @@ type StructDetails struct {
 	Fields      []FieldDetails
 }
 
-func ExtractDetails(packageName string, typeSpec *ast.TypeSpec) StructDetails {
+func ExtractStructDetails(packageName string, typeSpec *ast.TypeSpec) StructDetails {
 	structName := typeSpec.Name.Name
 	structDetails := StructDetails{
 		PackageName: packageName,
