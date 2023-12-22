@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=viqueen_go-immutables&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=viqueen_go-immutables)
+
 # go-immutables
 
 - Naive struct builder generator, nothing fancy, this took me a couple of hours to put together.
