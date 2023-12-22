@@ -35,28 +35,30 @@ func TestContentService(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		service := apicontent.NewContentServiceBuilder().
-			SetDataStore(make(map[string]apicontent.Content)).
-			Build()
-		var errs []error
+		t.Run(test.name, func(t *testing.T) {
+			service := apicontent.NewContentServiceBuilder().
+				SetDataStore(make(map[string]apicontent.Content)).
+				Build()
+			var errs []error
 
-		for _, input := range test.partials {
-			_, err := service.CreateContent(
-				*apicontent.NewCreateContentRequestBuilder().
-					SetTitle(input.title).
-					SetBody(input.body).
-					Build(),
-			)
-			if err != nil {
-				errs = append(errs, err)
+			for _, input := range test.partials {
+				_, err := service.CreateContent(
+					*apicontent.NewCreateContentRequestBuilder().
+						SetTitle(input.title).
+						SetBody(input.body).
+						Build(),
+				)
+				if err != nil {
+					errs = append(errs, err)
+				}
 			}
-		}
 
-		if test.err != nil {
-			assert.Len(t, errs, 1)
-			assert.Equal(t, test.err, errs[0])
-		} else {
-			assert.Len(t, errs, 0)
-		}
+			if test.err != nil {
+				assert.Len(t, errs, 1)
+				assert.Equal(t, test.err, errs[0])
+			} else {
+				assert.Len(t, errs, 0)
+			}
+		})
 	}
 }
